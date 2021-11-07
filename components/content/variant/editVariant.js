@@ -24,7 +24,7 @@ export default function EditVariant() {
   const dispatch = useDispatch();
   const router = useRouter();
   const allVariant = useSelector((state) => state.allVariant);
-  console.log("get one", allVariant);
+
   const {
     register,
     handleSubmit,
@@ -42,9 +42,8 @@ export default function EditVariant() {
       variantOption: [{ ...items, action: "UPDATE" }],
     };
   });
+  // field ini udah sesuai dengan kebutuhan tinggal diolah
   const [field, setField] = React.useState(fieldSortir[0]);
-
-  console.log("field", field);
 
   const _clearField = () => {
     setField({

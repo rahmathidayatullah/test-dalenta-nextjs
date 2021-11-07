@@ -4,7 +4,6 @@ import Layout from "../components/Layout";
 import { wrapper } from "../redux/store";
 
 function MyApp({ Component, pageProps }) {
-  console.log("pageProps", pageProps);
   return (
     <div>
       {!pageProps.data ? (
