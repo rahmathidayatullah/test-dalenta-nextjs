@@ -100,7 +100,6 @@ export default function ListModifier() {
         }
       );
       setProductForMove(data.data);
-      console.log("response data for move product", data);
     } catch (error) {
       Swal.fire("Gagal", `${error.response.data.code}`, "error");
     }

@@ -36,7 +36,7 @@ export default function ListCategory() {
   const [idCategtory, setidCategtory] = useState("");
   const [name, setName] = useState("");
   const allCategory = useSelector((state) => state.allCategory);
-  console.log("allCategory", allCategory);
+
   const changePages = (page, totalPage) => {
     if (totalPage < page) {
       dispatch(setPage(totalPage));
@@ -110,7 +110,6 @@ export default function ListCategory() {
         query: { update: true },
       });
     } catch (error) {
-      console.log(error);
       Swal.fire("Gagal", `${error.response.data.code}`, "error");
     }
   };

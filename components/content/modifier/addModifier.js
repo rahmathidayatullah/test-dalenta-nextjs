@@ -33,7 +33,6 @@ export default function AddModifier() {
     resolver: yupResolver(schema),
   });
   const [name, setName] = useState("");
-  console.log("name", name);
   const [modifierOption, setModifierOption] = useState([
     {
       name: "",
@@ -108,7 +107,6 @@ export default function AddModifier() {
             },
           }
         );
-        console.log("data", data);
         // _clearField();
         router.push({
           pathname: `/modifiers`,

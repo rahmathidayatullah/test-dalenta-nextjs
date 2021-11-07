@@ -23,7 +23,6 @@ export default function ListVariant() {
   const [message, setMessage] = useState(false);
 
   const allVariant = useSelector((state) => state.allVariant);
-  console.log("object", allVariant);
   const changePages = (page, totalPage) => {
     if (totalPage < page) {
       dispatch(setPage(totalPage));

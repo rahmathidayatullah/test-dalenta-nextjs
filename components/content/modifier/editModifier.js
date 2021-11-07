@@ -23,7 +23,7 @@ const schema = yup.object().shape({
 export default function EditModifier() {
   const router = useRouter();
   const allModifier = useSelector((state) => state.allModifier);
-  console.log("allModifier", allModifier);
+
   const {
     register,
     handleSubmit,
@@ -40,7 +40,6 @@ export default function EditModifier() {
       return { ...items, action: "UPDATE" };
     })
   );
-  console.log("modifierOption", modifierOption);
 
   const handleDelete = (index) => {
     let _temp = [...modifierOption];
