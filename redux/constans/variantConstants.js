@@ -1,0 +1,7 @@
+export const GET_ALL_VARIANT_SUCCESS = "GET_ALL_VARIANT_SUCCESS";
+export const GET_ALL_VARIANT_REQUEST = "GET_ALL_VARIANT_REQUEST";
+export const GET_ALL_VARIANT_FAIL = "GET_ALL_VARIANT_FAIL";
+// pagination
+export const SET_PAGE = "SET_PAGE";
+export const LIMIT_PAGE = "LIMIT_PAGE";
+export const SEARCH_KEYWORD = "SEARCH_KEYWORD";

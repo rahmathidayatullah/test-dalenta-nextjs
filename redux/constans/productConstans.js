@@ -1,0 +1,7 @@
+export const GET_ALL_PRODUCT_SUCCESS = "GET_ALL_PRODUCT_SUCCESS";
+export const GET_ALL_PRODUCT_REQUEST = "GET_ALL_PRODUCT_REQUEST";
+export const GET_ALL_PRODUCT_FAIL = "GET_ALL_PRODUCT_FAIL";
+// pagination
+export const SET_PAGE = "SET_PAGE";
+export const LIMIT_PAGE = "LIMIT_PAGE";
+export const SEARCH_KEYWORD = "SEARCH_KEYWORD";

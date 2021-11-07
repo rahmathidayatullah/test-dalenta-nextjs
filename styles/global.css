@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+table thead tr th{
+  text-align: left;
+  padding: 13px 16px 10px 24px;
+  font-size: 15px;
+  font-weight: 600;
+  
+}
+table thead tr{
+  background-color: #f5f5f5;
+  
+}
+table tbody tr td {
+  text-align: left;
+  padding: 13px 16px 10px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #5c5c5c;
+  
+}
+table tbody tr{
+  transition: 0.2s;
+}
+table tbody tr:hover{
+  background-color: #ebeeff;
+}
+table thead tr th:last-child,
+table tbody tr td:last-child {
+  text-align: right;
+}
+
+table{ 
+  width: 100% !important;
+}
+
+
+.pagination{
+  margin-top: 3rem;
+  display: flex;
+  justify-content: center;
+}
+
+.pagination li {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000d23;
+  font-size: 14px;
+  font-weight: 500;
+  margin-right: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.pagination li:hover {
+  background-color: #1f4bff40;
+  cursor: pointer;
+}
+
+
+.pagination .active{
+  outline: none;
+  background-color: #1f4bff;
+  color: #fff;
+}
+.pagination .active:hover{
+  background-color: #1f4bff;
+}
+
+

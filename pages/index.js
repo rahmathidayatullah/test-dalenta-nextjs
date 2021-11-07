@@ -1,82 +1,63 @@
-import Head from 'next/head'
+import Head from "next/head";
+import IconArrow from "../components/icon/Arrow";
+import IconDalenta from "../components/icon/Dalenta";
+import IconFilter from "../components/icon/Filter";
+import IconSearch from "../components/icon/Search";
+import IconToggle from "../components/icon/Toggle";
+import IconPlus from "../components/icon/Plus";
+import IconImage from "../components/icon/Image";
+import IconWarning from "../components/icon/Warning";
+import IconDelete from "../components/icon/Delete";
+import IconEdit from "../components/icon/Edit";
+import IconDuplicate from "../components/icon/Duplicate";
+import IconTransaction from "../components/icon/Transaction";
+import IconClose from "../components/icon/Close";
+import ButtonPrimary from "../components/button/Primary";
+import ButtonSecondaryIcon from "../components/button/SecondaryIcon";
+import FieldSearch from "../components/Search";
+import FieldFilter from "../components/Filter";
+import Table from "../components/Table";
+import LayoutItemsList from "../components/LayoutItemsList";
+
+// import { wrapper } from "../redux/store";
+// import { getAllProducts } from "../redux/actions/productActions";
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2">
+    <div>
       <Head>
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <div className="p-10 border m-10">
+        <Table />
+      </div>
+      <LayoutItemsList />
 
-      <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
-        <h1 className="text-6xl font-bold">
-          Welcome to{' '}
-          <a className="text-blue-600" href="https://nextjs.org">
-            Next.js!
-          </a>
-        </h1>
-
-        <p className="mt-3 text-2xl">
-          Get started by editing{' '}
-          <code className="p-3 font-mono text-lg bg-gray-100 rounded-md">
-            pages/index.js
-          </code>
-        </p>
-
-        <div className="flex flex-wrap items-center justify-around max-w-4xl mt-6 sm:w-full">
-          <a
-            href="https://nextjs.org/docs"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Documentation &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Find in-depth information about Next.js features and API.
-            </p>
-          </a>
-
-          <a
-            href="https://nextjs.org/learn"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Learn &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Learn about Next.js in an interactive course with quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Examples &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Discover and deploy boilerplate example Next.js projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Deploy &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className="flex items-center justify-center w-full h-24 border-t">
-        <a
-          className="flex items-center justify-center"
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className="h-4 ml-2" />
-        </a>
-      </footer>
+      <IconArrow />
+      <IconDalenta />
+      <IconImage />
+      <IconFilter />
+      <IconSearch />
+      <IconDelete />
+      <IconToggle />
+      <IconDuplicate />
+      <IconWarning />
+      <IconPlus />
+      <IconEdit />
+      <IconTransaction />
+      <IconClose />
+      <ButtonPrimary>Add new product</ButtonPrimary>
+      <ButtonSecondaryIcon>More actions</ButtonSecondaryIcon>
+      <FieldSearch />
+      <FieldFilter />
     </div>
-  )
+  );
 }
+
+// export const getServerSideProps = wrapper.getServerSideProps(
+//   (store) =>
+//     async ({ req, query }) => {
+//       await store.dispatch(getAllProducts(process.env.TOKEN));
+//     }
+// );
