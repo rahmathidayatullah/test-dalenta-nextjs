@@ -2,6 +2,9 @@ import {
   GET_ALL_VARIANT_SUCCESS,
   GET_ALL_VARIANT_REQUEST,
   GET_ALL_VARIANT_FAIL,
+  GET_ONE_VARIANT_SUCCESS,
+  GET_ONE_VARIANT_REQUEST,
+  GET_ONE_VARIANT_FAIL,
   SET_PAGE,
   LIMIT_PAGE,
   SEARCH_KEYWORD,
@@ -22,6 +25,7 @@ const initialState = {
   total: 0,
   keyword: "",
   allVariant: [],
+  oneVariant: [],
 };
 
 export const allVariantReducer = (state = initialState, action) => {
@@ -42,6 +46,25 @@ export const allVariantReducer = (state = initialState, action) => {
       };
 
     case GET_ALL_VARIANT_FAIL:
+      return {
+        ...state,
+        statusLoad: statuslist.error,
+        error: action.payload,
+      };
+    case GET_ONE_VARIANT_REQUEST:
+      return {
+        ...state,
+        statusLoad: statuslist.process,
+      };
+
+    case GET_ONE_VARIANT_SUCCESS:
+      return {
+        ...state,
+        statusLoad: statuslist.success,
+        oneVariant: action.payload,
+      };
+
+    case GET_ONE_VARIANT_FAIL:
       return {
         ...state,
         statusLoad: statuslist.error,

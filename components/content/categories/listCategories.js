@@ -202,61 +202,67 @@ export default function ListCategory() {
       </div>
       {/* table */}
       <div className="mt-4">
-        <table className="border">
+        <table className="border-table">
           <thead>
-            <tr className="border">
+            <tr className="border-table">
               <th>Category name</th>
               <th>Assigned products</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
-            {allCategory.statusLoad === "process"
-              ? "Loading"
-              : allCategory.allCategory.map((items, index) => {
-                  return (
-                    <tr key={index} className="border">
-                      <td>{items.name}</td>
-                      <td>body 1</td>
-                      <td>
-                        <div className="relative">
-                          <div
-                            className="flex justify-end"
-                            onClick={() => handleToggle(index)}
-                          >
-                            <div className="p-3 rounded-lg hover:bg-blue-200 duration-500 cursor-pointer">
-                              <IconToggle />
-                            </div>
+            {allCategory.statusLoad === "process" ? (
+              <td colSpan="3" className="text-center p-4">
+                Loading ...
+              </td>
+            ) : (
+              allCategory.allCategory.map((items, index) => {
+                return (
+                  <tr key={index} className="border-table">
+                    <td>{items.name}</td>
+                    <td>body 1</td>
+                    <td>
+                      <div className="relative">
+                        <div
+                          className="flex justify-end"
+                          onClick={() => handleToggle(index)}
+                        >
+                          <div className="p-3 rounded-lg hover:bg-blue-200 duration-500 cursor-pointer">
+                            <IconToggle />
                           </div>
-                          {isToggle === index ? (
-                            <LayoutItemsList>
-                              <li>
-                                <button
-                                  className="p-3 flex items-center hover:bg-secondary duration-500 cursor-pointer"
-                                  onClick={() => handleRename(items.id)}
-                                >
-                                  <IconEdit className="mr-3" />
-                                  <span>Rename Category</span>
-                                </button>
-                              </li>
-                              <li>
-                                <button
-                                  className="p-3 flex items-center hover:bg-secondary duration-500 cursor-pointer"
-                                  onClick={() => handleDelete(items.id, index)}
-                                >
-                                  <IconEdit className="mr-3" />
-                                  <span>Delete Category</span>
-                                </button>
-                              </li>
-                            </LayoutItemsList>
-                          ) : (
-                            ""
-                          )}
                         </div>
-                      </td>
-                    </tr>
-                  );
-                })}
+                        {isToggle === index ? (
+                          <LayoutItemsList>
+                            <li>
+                              <button
+                                className="p-3 flex items-center hover:bg-secondary duration-500 cursor-pointer"
+                                onClick={() => handleRename(items.id)}
+                              >
+                                <IconEdit className="mr-3" />
+                                <span>Rename Category</span>
+                              </button>
+                            </li>
+                            <li>
+                              <button
+                                className="p-3 flex items-center hover:bg-secondary duration-500 cursor-pointer"
+                                onClick={() => handleDelete(items.id, index)}
+                              >
+                                <IconDelete fill="#ff565c" className="mr-3" />
+                                <span className="text-red">
+                                  Delete Category
+                                </span>
+                              </button>
+                            </li>
+                          </LayoutItemsList>
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })
+            )}
           </tbody>
         </table>
       </div>

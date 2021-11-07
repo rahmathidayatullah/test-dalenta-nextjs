@@ -2,6 +2,9 @@ import {
   GET_ALL_MODIFIER_SUCCESS,
   GET_ALL_MODIFIER_REQUEST,
   GET_ALL_MODIFIER_FAIL,
+  GET_ONE_MODIFIER_SUCCESS,
+  GET_ONE_MODIFIER_REQUEST,
+  GET_ONE_MODIFIER_FAIL,
   SET_PAGE,
   LIMIT_PAGE,
   SEARCH_KEYWORD,
@@ -22,6 +25,7 @@ const initialState = {
   total: 0,
   keyword: "",
   allModifier: [],
+  oneModifier: [],
 };
 
 export const allModifierReducer = (state = initialState, action) => {
@@ -42,6 +46,25 @@ export const allModifierReducer = (state = initialState, action) => {
       };
 
     case GET_ALL_MODIFIER_FAIL:
+      return {
+        ...state,
+        statusLoad: statuslist.error,
+        error: action.payload,
+      };
+    case GET_ONE_MODIFIER_REQUEST:
+      return {
+        ...state,
+        statusLoad: statuslist.process,
+      };
+
+    case GET_ONE_MODIFIER_SUCCESS:
+      return {
+        ...state,
+        statusLoad: statuslist.success,
+        oneModifier: action.payload.data,
+      };
+
+    case GET_ONE_MODIFIER_FAIL:
       return {
         ...state,
         statusLoad: statuslist.error,

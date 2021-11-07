@@ -4,6 +4,9 @@ import {
   GET_ALL_MODIFIER_SUCCESS,
   GET_ALL_MODIFIER_REQUEST,
   GET_ALL_MODIFIER_FAIL,
+  GET_ONE_MODIFIER_SUCCESS,
+  GET_ONE_MODIFIER_REQUEST,
+  GET_ONE_MODIFIER_FAIL,
   SET_PAGE,
   LIMIT_PAGE,
   SEARCH_KEYWORD,
@@ -45,6 +48,31 @@ export const getAllModifiers = (token) => {
     } catch (error) {
       dispatch({
         type: GET_ALL_MODIFIER_FAIL,
+        payload: error.response.data.message,
+      });
+    }
+  };
+};
+export const getOneModifiers = (token, id) => {
+  return async (dispatch) => {
+    dispatch({ type: GET_ONE_MODIFIER_REQUEST });
+    try {
+      const response = await axios.get(
+        `${process.env.END_POINT_API}sales/api/v1/modifier/${id}`,
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+            locationId: process.env.LOCATION_ID,
+          },
+        }
+      );
+      dispatch({
+        type: GET_ONE_MODIFIER_SUCCESS,
+        payload: response.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: GET_ONE_MODIFIER_FAIL,
         payload: error.response.data.message,
       });
     }

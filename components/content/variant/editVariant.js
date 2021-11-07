@@ -20,9 +20,11 @@ const schema = yup.object().shape({
   name: yup.string().required(),
 });
 
-export default function AddVariant() {
+export default function EditVariant() {
   const dispatch = useDispatch();
   const router = useRouter();
+  const allVariant = useSelector((state) => state.allVariant);
+  console.log("get one", allVariant);
   const {
     register,
     handleSubmit,
@@ -34,19 +36,15 @@ export default function AddVariant() {
     resolver: yupResolver(schema),
   });
 
-  const [field, setField] = React.useState({
-    name: "",
-    variantOption: [
-      {
-        index: 1,
-        name: "",
-      },
-      {
-        index: 2,
-        name: "",
-      },
-    ],
+  const fieldSortir = allVariant.oneVariant.data.variantOption.map((items) => {
+    return {
+      name: allVariant.oneVariant.data.name,
+      variantOption: [{ ...items, action: "UPDATE" }],
+    };
   });
+  const [field, setField] = React.useState(fieldSortir[0]);
+
+  console.log("field", field);
 
   const _clearField = () => {
     setField({
@@ -71,6 +69,7 @@ export default function AddVariant() {
     _temp.push({
       index: _temp.length ? _temp[_temp.length - 1].index + 1 : 1,
       name: "",
+      action: "NEW",
     });
     setField({ ...field, variantOption: _temp });
   };
@@ -119,8 +118,8 @@ export default function AddVariant() {
     }
     if (!error) {
       try {
-        let { data } = await axios.post(
-          `${process.env.END_POINT_API}sales/api/v1/variant`,
+        let { data } = await axios.put(
+          `${process.env.END_POINT_API}sales/api/v1/variant/${router.query.id}`,
           field,
           {
             headers: {
@@ -132,7 +131,7 @@ export default function AddVariant() {
         _clearField();
         router.push({
           pathname: `/variant`,
-          query: { success: true },
+          query: { success: "update" },
         });
       } catch (error) {
         console.log("gagal add", error);
@@ -150,7 +149,7 @@ export default function AddVariant() {
               <IconClose className="cursor-pointer mr-3" />
             </a>
           </Link>
-          Add new variant
+          Edit new variant
         </div>
         <ButtonPrimary type="submit" onClick={(e) => _onSubmit(e)}>
           Save variant set
@@ -185,6 +184,7 @@ export default function AddVariant() {
                   <div className="flex items-center">
                     <IconDrag width="12" height="12" />
                     <input
+                      value={items.name}
                       type="text"
                       className="w-full bg-gray rounded-lg focus:outline-none p-3 mt-3 mx-5 text-sm"
                       placeholder="E.g: Color"

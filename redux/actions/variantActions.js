@@ -4,6 +4,9 @@ import {
   GET_ALL_VARIANT_SUCCESS,
   GET_ALL_VARIANT_REQUEST,
   GET_ALL_VARIANT_FAIL,
+  GET_ONE_VARIANT_SUCCESS,
+  GET_ONE_VARIANT_REQUEST,
+  GET_ONE_VARIANT_FAIL,
   SET_PAGE,
   LIMIT_PAGE,
   SEARCH_KEYWORD,
@@ -45,6 +48,32 @@ export const getAllVariants = (token) => {
     } catch (error) {
       dispatch({
         type: GET_ALL_VARIANT_FAIL,
+        payload: error.response.data.message,
+      });
+    }
+  };
+};
+
+export const getOneVariant = (token, id) => {
+  return async (dispatch) => {
+    dispatch({ type: GET_ONE_VARIANT_REQUEST });
+    try {
+      const response = await axios.get(
+        `${process.env.END_POINT_API}sales/api/v1/variant/${id}`,
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+            locationId: process.env.LOCATION_ID,
+          },
+        }
+      );
+      dispatch({
+        type: GET_ONE_VARIANT_SUCCESS,
+        payload: response.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: GET_ONE_VARIANT_FAIL,
         payload: error.response.data.message,
       });
     }

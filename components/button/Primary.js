@@ -1,9 +1,16 @@
-export default function Primary({ children, className, type, onClick }) {
+export default function Primary({
+  children,
+  className,
+  type,
+  onClick,
+  bgColor,
+  colorText,
+}) {
   return (
     <button
       type={type}
       onClick={onClick}
-      className={`px-4 py-2 border rounded-lg bg-primary text-white border-transparent text-sm font-semibold ${
+      className={`px-4 py-2 border rounded-lg font-bold ${bgColor} ${colorText} border-transparent text-sm ${
         className ? className : ""
       } `}
     >
@@ -15,5 +22,6 @@ export default function Primary({ children, className, type, onClick }) {
 Primary.defaultProps = {
   children: "Button",
   type: "button",
-  bgColor: "",
+  bgColor: "bg-primary",
+  colorText: "text-white",
 };

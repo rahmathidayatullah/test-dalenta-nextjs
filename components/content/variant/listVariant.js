@@ -23,6 +23,7 @@ export default function ListVariant() {
   const [message, setMessage] = useState(false);
 
   const allVariant = useSelector((state) => state.allVariant);
+  console.log("object", allVariant);
   const changePages = (page, totalPage) => {
     if (totalPage < page) {
       dispatch(setPage(totalPage));
@@ -32,6 +33,10 @@ export default function ListVariant() {
   };
   const handleChangeLimit = (e) => {
     dispatch(limitPage(e.target.value));
+  };
+
+  const editVariant = (id) => {
+    router.push(`/variant/editVariant/${id}`);
   };
   useEffect(() => {
     if (success) {
@@ -76,30 +81,38 @@ export default function ListVariant() {
       </div>
       {/* table */}
       <div className="mt-4">
-        <table className="border">
+        <table className="border-table">
           <thead>
-            <tr className="border">
+            <tr className="border-table">
               <th>Variant set name</th>
               <th>Options</th>
               <th>Product</th>
             </tr>
           </thead>
           <tbody>
-            {allVariant.statusLoad === "process"
-              ? "Loading"
-              : allVariant.allVariant.map((items, index) => {
-                  return (
-                    <tr key={index} className="border">
-                      <td>{items.name}</td>
-                      <td>
-                        {items.variantOption.map((item, i) => {
-                          return <span key={i}>{item.name},</span>;
-                        })}
-                      </td>
-                      <td>body 2</td>
-                    </tr>
-                  );
-                })}
+            {allVariant.statusLoad === "process" ? (
+              <td colSpan="3" className="text-center p-4">
+                Loading ...
+              </td>
+            ) : (
+              allVariant.allVariant.map((items, index) => {
+                return (
+                  <tr
+                    key={index}
+                    onClick={() => editVariant(items.id)}
+                    className="border-table"
+                  >
+                    <td>{items.name}</td>
+                    <td>
+                      {items.variantOption.map((item, i) => {
+                        return <span key={i}>{item.name},</span>;
+                      })}
+                    </td>
+                    <td>{items.products.length} product</td>
+                  </tr>
+                );
+              })
+            )}
           </tbody>
         </table>
       </div>

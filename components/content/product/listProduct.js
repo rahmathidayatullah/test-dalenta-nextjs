@@ -61,9 +61,9 @@ export default function ListProduct() {
       </div>
       {/* table */}
       <div className="mt-4">
-        <table className="border">
+        <table className="border-table">
           <thead>
-            <tr className="border">
+            <tr className="border-table">
               <th>Product name</th>
               <th>SKU</th>
               <th>Category</th>
@@ -73,24 +73,28 @@ export default function ListProduct() {
             </tr>
           </thead>
           <tbody>
-            {allProduct.statusLoad === "process"
-              ? "Loading"
-              : allProduct.allProduct.map((items, index) => {
-                  return (
-                    <tr key={index} className="border">
-                      <td>{items.name}</td>
-                      <td>body 1</td>
-                      <td>body 2</td>
-                      <td>body 3</td>
-                      <td>body 3</td>
-                      <td>
-                        <div className="flex justify-end">
-                          <IconToggle className="cursor-pointer" />
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
+            {allProduct.statusLoad === "process" ? (
+              <td colSpan="6" className="text-center p-4">
+                Loading ...
+              </td>
+            ) : (
+              allProduct.allProduct.map((items, index) => {
+                return (
+                  <tr key={index} className="border-table">
+                    <td>{items.name}</td>
+                    <td>body 1</td>
+                    <td>body 2</td>
+                    <td>body 3</td>
+                    <td>body 3</td>
+                    <td>
+                      <div className="flex justify-end">
+                        <IconToggle className="cursor-pointer" />
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })
+            )}
           </tbody>
         </table>
       </div>

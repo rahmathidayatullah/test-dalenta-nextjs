@@ -1,6 +1,11 @@
+// het all variant
 export const GET_ALL_VARIANT_SUCCESS = "GET_ALL_VARIANT_SUCCESS";
 export const GET_ALL_VARIANT_REQUEST = "GET_ALL_VARIANT_REQUEST";
 export const GET_ALL_VARIANT_FAIL = "GET_ALL_VARIANT_FAIL";
+// het one variant
+export const GET_ONE_VARIANT_SUCCESS = "GET_ONE_VARIANT_SUCCESS";
+export const GET_ONE_VARIANT_REQUEST = "GET_ONE_VARIANT_REQUEST";
+export const GET_ONE_VARIANT_FAIL = "GET_ONE_VARIANT_FAIL";
 // pagination
 export const SET_PAGE = "SET_PAGE";
 export const LIMIT_PAGE = "LIMIT_PAGE";
