@@ -1,9 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import IconSearch from "../components/icon/Search";
 import IconClose from "../components/icon/Close";
-export default function Search({ className, placeholder, onChange }) {
-  const [isSearch, setIsSearch] = useState(false);
-  return isSearch ? (
+export default function Search({
+  className,
+  placeholder,
+  onChange,
+  show,
+  onClick,
+  value,
+}) {
+  return show ? (
     <div
       className={`relative flex items-center border border-transparent bg-secondary rounded-lg px-4 py-2 ${
         className ? className : ""
@@ -19,7 +25,7 @@ export default function Search({ className, placeholder, onChange }) {
       />
       <IconClose
         className="cursor-pointer absolute z-10 right-4"
-        onClick={() => setIsSearch(false)}
+        onClick={onClick}
       />
     </div>
   ) : (
@@ -27,10 +33,11 @@ export default function Search({ className, placeholder, onChange }) {
       className={`relative flex items-center border border-black rounded-lg px-4 py-2 ${
         className ? className : ""
       }`}
-      onClick={() => setIsSearch(true)}
+      onClick={onClick}
     >
       <IconSearch />
       <input
+        value={value}
         type="text"
         onChange={onChange}
         placeholder={placeholder}

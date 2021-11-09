@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react";
 import FieldSearch from "../../../components/Search";
 import IconToggle from "../../../components/icon/Toggle";
 import IconArrow from "../../../components/icon/Arrow";
-import FieldFilter from "../../../components/Filter";
 import ButtonPrimary from "../../../components/button/Primary";
-import ButtonSecondaryIcon from "../../../components/button/SecondaryIcon";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
@@ -16,6 +14,7 @@ import { useRouter } from "next/router";
 import LayoutItemsList from "../../LayoutItemsList";
 import IconEdit from "../../../components/icon/Edit";
 import IconDelete from "../../../components/icon/Delete";
+import Card from "../../Card";
 import {
   getAllCategory,
   setPage,
@@ -24,10 +23,17 @@ import {
 } from "../../../redux/actions/categoriesActions";
 import Link from "next/link";
 import Pagination from "react-js-pagination";
+
 export default function ListCategory() {
   const router = useRouter();
   const dispatch = useDispatch();
-
+  const [keyword, setKeyword] = useState("");
+  const [isSearch, setIsSearch] = useState(false);
+  const clearKeyWord = () => {
+    setIsSearch(isSearch ? false : true);
+    dispatch(searchByKeyword(""));
+    setKeyword("");
+  };
   const [isToggle, setIsToggle] = useState("");
 
   const { success, update } = router.query;
@@ -36,14 +42,7 @@ export default function ListCategory() {
   const [idCategtory, setidCategtory] = useState("");
   const [name, setName] = useState("");
   const allCategory = useSelector((state) => state.allCategory);
-
-  const changePages = (page, totalPage) => {
-    if (totalPage < page) {
-      dispatch(setPage(totalPage));
-    } else {
-      dispatch(setPage(page));
-    }
-  };
+  console.log("allCategory", allCategory);
 
   const handleToggle = (index) => {
     if (isToggle === index) {
@@ -64,13 +63,14 @@ export default function ListCategory() {
           },
         }
       );
+      setIsToggle("");
       dispatch(getAllCategory(process.env.TOKEN));
       router.push({
         pathname: `/categories`,
-        query: { delete: true },
+        query: { success: "delete" },
       });
     } catch (error) {
-      Swal.fire("Gagal", `${error.response.data.code}`, "error");
+      return;
     }
   };
 
@@ -107,21 +107,16 @@ export default function ListCategory() {
       setIsModalEdit(false);
       router.push({
         pathname: `/categories`,
-        query: { update: true },
+        query: { success: "update" },
       });
     } catch (error) {
       Swal.fire("Gagal", `${error.response.data.code}`, "error");
+      // console.log("error", error);
     }
   };
 
   useEffect(() => {
     if (success) {
-      setIsModalAdd(false);
-      setTimeout(() => {
-        router.replace("/categories", undefined, { shallow: true });
-      }, 3000);
-    }
-    if (update) {
       setIsModalAdd(false);
       setTimeout(() => {
         router.replace("/categories", undefined, { shallow: true });
@@ -142,7 +137,8 @@ export default function ListCategory() {
         );
         setName(data.data.name);
       } catch (error) {
-        Swal.fire("Gagal", `${error.response.data.code}`, "error");
+        // Swal.fire("Gagal", `${error.response.data.code}`, "error");
+        console.log(error, "error");
       }
     }
     if (idCategtory) {
@@ -163,8 +159,19 @@ export default function ListCategory() {
       className="px-5 pt-4 w-full relative z-20 overflow-scroll"
       style={{ height: "93vh" }}
     >
-      {success ? <p>Berhasil create</p> : ""}
-      {update ? <p>Berhasil update</p> : ""}
+      {/* card notifikasi */}
+      <Card
+        show={success}
+        title={"Category set successfully"}
+        text={`Category has been successfully ${
+          success === "delete"
+            ? "delete"
+            : success === "update"
+            ? "updated"
+            : "added"
+        } into the variant option list`}
+      />
+
       <Modal show={isModalAdd}>
         <AddCategories
           show={isModalAdd}
@@ -183,11 +190,14 @@ export default function ListCategory() {
       <h4 className="font-bold text-base mt-3">Categories</h4>
       {/* head */}
       <div className="flex flex-wrap items-center justify-between mt-3">
-        <div className="mt-2">
+        <div className="mt-2 w-80">
           <FieldSearch
             className="mr-2"
             placeholder="Find categories"
             onChange={(e) => dispatch(searchByKeyword(e.target.value))}
+            value={keyword}
+            onClick={() => clearKeyWord()}
+            show={isSearch}
           />
         </div>
         <div className="mt-2">
@@ -210,7 +220,11 @@ export default function ListCategory() {
             </tr>
           </thead>
           <tbody>
-            {allCategory.statusLoad === "process" ? (
+            {allCategory.allCategory.length === 0 ? (
+              <td colSpan="3" className="text-center p-4">
+                Data tidak ditemukan
+              </td>
+            ) : allCategory.statusLoad === "process" ? (
               <td colSpan="3" className="text-center p-4">
                 Loading ...
               </td>
@@ -219,7 +233,9 @@ export default function ListCategory() {
                 return (
                   <tr key={index} className="border-table">
                     <td>{items.name}</td>
-                    <td>body 1</td>
+                    <td className="text-primary">
+                      {items.products.length} product assigned
+                    </td>
                     <td>
                       <div className="relative">
                         <div
@@ -269,14 +285,14 @@ export default function ListCategory() {
       <div>
         <Pagination
           activePage={allCategory.page}
-          itemsCountPerPage={allCategory?.pages}
+          itemsCountPerPage={allCategory?.limit}
           totalItemsCount={allCategory?.total}
-          pageRangeDisplayed={allCategory?.pages - 1}
-          onChange={(page) => changePages(page, allCategory.pages)}
+          pageRangeDisplayed={5}
+          onChange={(pageNumber) => dispatch(setPage(pageNumber))}
           nextPageText={<IconArrow className="rotate-90" />}
           prevPageText={<IconArrow className="-rotate-90" />}
-          firstPageText={""}
-          lastPageText={""}
+          // firstPageText={""}
+          // lastPageText={""}
           itemClass="page-item"
           linkClass="page-link"
         />

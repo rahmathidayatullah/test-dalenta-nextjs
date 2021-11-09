@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import FieldSearch from "../../../components/Search";
-import IconToggle from "../../../components/icon/Toggle";
-import FieldFilter from "../../../components/Filter";
 import ButtonPrimary from "../../../components/button/Primary";
-import ButtonSecondaryIcon from "../../../components/button/SecondaryIcon";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
@@ -16,32 +13,28 @@ import {
   searchByKeyword,
 } from "../../../redux/actions/variantActions";
 import Pagination from "react-js-pagination";
+import Card from "../../Card";
 export default function ListVariant() {
   const router = useRouter();
   const dispatch = useDispatch();
   const { success } = router.query;
-  const [message, setMessage] = useState(false);
-
+  const [keyword, setKeyword] = useState("");
+  const [isSearch, setIsSearch] = useState(false);
   const allVariant = useSelector((state) => state.allVariant);
-  const changePages = (page, totalPage) => {
-    if (totalPage < page) {
-      dispatch(setPage(totalPage));
-    } else {
-      dispatch(setPage(page));
-    }
-  };
   const handleChangeLimit = (e) => {
     dispatch(limitPage(e.target.value));
   };
-
   const editVariant = (id) => {
     router.push(`/variant/editVariant/${id}`);
   };
+  const clearKeyWord = () => {
+    setIsSearch(isSearch ? false : true);
+    dispatch(searchByKeyword(""));
+    setKeyword("");
+  };
   useEffect(() => {
     if (success) {
-      setMessage(true);
       setTimeout(() => {
-        setMessage(false);
         router.replace("/variant", undefined, { shallow: true });
       }, 3000);
     }
@@ -59,15 +52,29 @@ export default function ListVariant() {
       className="px-5 pt-4 w-full relative z-20 overflow-scroll"
       style={{ height: "93vh" }}
     >
-      {message ? <p>berhasil</p> : ""}
+      {/* card notifikasi */}
+      <Card
+        show={success}
+        title={"Category set successfully"}
+        text={`Category has been successfully ${
+          success === "delete"
+            ? "delete"
+            : success === "update"
+            ? "updated"
+            : "added"
+        } into the variant option list`}
+      />
       <h4 className="font-bold text-base mt-3">Variant</h4>
       {/* head */}
       <div className="flex flex-wrap items-center justify-between mt-3">
-        <div className="mt-2">
+        <div className="mt-2 w-80">
           <FieldSearch
             className="mr-2"
             placeholder="Find variant or options"
             onChange={(e) => dispatch(searchByKeyword(e.target.value))}
+            value={keyword}
+            onClick={() => clearKeyWord()}
+            show={isSearch}
           />
         </div>
         <div className="mt-2">
@@ -89,7 +96,11 @@ export default function ListVariant() {
             </tr>
           </thead>
           <tbody>
-            {allVariant.statusLoad === "process" ? (
+            {allVariant.allVariant.length === 0 ? (
+              <td colSpan="3" className="text-center p-4">
+                Data tidak ditemukan
+              </td>
+            ) : allVariant.statusLoad === "process" ? (
               <td colSpan="3" className="text-center p-4">
                 Loading ...
               </td>
@@ -119,14 +130,14 @@ export default function ListVariant() {
       <div>
         <Pagination
           activePage={allVariant.page}
-          itemsCountPerPage={allVariant?.pages}
+          itemsCountPerPage={allVariant?.limit}
           totalItemsCount={allVariant?.total}
-          pageRangeDisplayed={allVariant?.pages - 1}
-          onChange={(page) => changePages(page, allVariant.pages)}
+          pageRangeDisplayed={5}
+          onChange={(pageNumber) => dispatch(setPage(pageNumber))}
           nextPageText={<IconArrow className="rotate-90" />}
           prevPageText={<IconArrow className="-rotate-90" />}
-          firstPageText={""}
-          lastPageText={""}
+          // firstPageText={""}
+          // lastPageText={""}
           itemClass="page-item"
           linkClass="page-link"
         />

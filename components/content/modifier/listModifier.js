@@ -5,15 +5,14 @@ import IconEdit from "../../../components/icon/Edit";
 import IconClose from "../../../components/icon/Close";
 import IconDelete from "../../../components/icon/Delete";
 import IconArrow from "../../../components/icon/Arrow";
-import FieldFilter from "../../../components/Filter";
 import ButtonPrimary from "../../../components/button/Primary";
 import Swal from "sweetalert2";
 import Link from "next/link";
-import ButtonSecondaryIcon from "../../../components/button/SecondaryIcon";
 import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import LayoutItemsList from "../../LayoutItemsList";
+import Card from "../../Card";
 import {
   getAllModifiers,
   setPage,
@@ -25,6 +24,13 @@ import axios from "axios";
 import Modal from "../../Modal";
 export default function ListModifier() {
   const dispatch = useDispatch();
+  const [keyword, setKeyword] = useState("");
+  const [isSearch, setIsSearch] = useState(false);
+  const clearKeyWord = () => {
+    setIsSearch(isSearch ? false : true);
+    dispatch(searchByKeyword(""));
+    setKeyword("");
+  };
   const router = useRouter();
   const allModifier = useSelector((state) => state.allModifier);
   const [productForMove, setProductForMove] = useState([]);
@@ -32,23 +38,12 @@ export default function ListModifier() {
   const [isModalMove, setIsModalMove] = useState(false);
   const [isToggle, setIsToggle] = useState("");
   const { success } = router.query;
-  const [message, setMessage] = useState(false);
   const [idProduct, setIdProduct] = useState("");
-  const [productMoveState, setProductMoveState] = useState([]);
-
   const handleToggle = (index) => {
     if (isToggle === index) {
       setIsToggle("");
     } else {
       setIsToggle(index);
-    }
-  };
-
-  const changePages = (page, totalPage) => {
-    if (totalPage < page) {
-      dispatch(setPage(totalPage));
-    } else {
-      dispatch(setPage(page));
     }
   };
   const handleChangeLimit = (e) => {
@@ -132,7 +127,7 @@ export default function ListModifier() {
     }
   };
 
-  const handleChangeMoveItem = (e, nameProduct, idx) => {
+  const handleChangeMoveItem = (e, idx) => {
     let _temp = [...productForMove];
     _temp[idx].isChecked = e.target.checked;
     setProductForMove(_temp);
@@ -152,9 +147,7 @@ export default function ListModifier() {
 
   useEffect(() => {
     if (success) {
-      setMessage(true);
       setTimeout(() => {
-        setMessage(false);
         router.replace("/modifiers", undefined, { shallow: true });
       }, 3000);
     }
@@ -299,15 +292,32 @@ export default function ListModifier() {
         </div>
       </Modal>
 
-      {message ? <p>berhasil</p> : ""}
+      {/* card notifikasi */}
+      <Card
+        show={success}
+        title={"Modifier set successfully"}
+        text={`Modifier has been successfully ${
+          success === "delete"
+            ? "delete"
+            : success === "update"
+            ? "updated"
+            : success === "move"
+            ? "move"
+            : "added"
+        }`}
+      />
+
       <h4 className="font-bold text-base mt-3">Modifiers</h4>
       {/* head */}
       <div className="flex flex-wrap items-center justify-between mt-3">
-        <div className="mt-2">
+        <div className="mt-2 w-80">
           <FieldSearch
             className="mr-2"
             placeholder="Find modifier or options"
             onChange={(e) => dispatch(searchByKeyword(e.target.value))}
+            value={keyword}
+            onClick={() => clearKeyWord()}
+            show={isSearch}
           />
         </div>
         <div className="mt-2">
@@ -330,7 +340,11 @@ export default function ListModifier() {
             </tr>
           </thead>
           <tbody>
-            {allModifier.statusLoad === "process" ? (
+            {allModifier.allModifier.length === 0 ? (
+              <td colSpan="4" className="text-center p-4">
+                Data tidak ditemukan
+              </td>
+            ) : allModifier.statusLoad === "process" ? (
               <td colSpan="4" className="text-center p-4">
                 Loading ...
               </td>
@@ -404,14 +418,14 @@ export default function ListModifier() {
       <div>
         <Pagination
           activePage={allModifier.page}
-          itemsCountPerPage={allModifier?.pages}
+          itemsCountPerPage={allModifier?.limit}
           totalItemsCount={allModifier?.total}
-          pageRangeDisplayed={allModifier?.pages - 1}
-          onChange={(page) => changePages(page, allModifier.pages)}
+          pageRangeDisplayed={5}
+          onChange={(pageNumber) => dispatch(setPage(pageNumber))}
           nextPageText={<IconArrow className="rotate-90" />}
           prevPageText={<IconArrow className="-rotate-90" />}
-          firstPageText={""}
-          lastPageText={""}
+          // firstPageText={""}
+          // lastPageText={""}
           itemClass="page-item"
           linkClass="page-link"
         />

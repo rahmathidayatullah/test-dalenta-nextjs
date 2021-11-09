@@ -12,6 +12,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import axios from "axios";
 import Swal from "sweetalert2";
+import MessageRequired from "../../messageRequired";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
@@ -132,7 +133,7 @@ export default function AddVariant() {
         _clearField();
         router.push({
           pathname: `/variant`,
-          query: { success: true },
+          query: { success: "success" },
         });
       } catch (error) {
         console.log("gagal add", error);
@@ -159,21 +160,30 @@ export default function AddVariant() {
       {/* end head */}
       {/* start content */}
       <div>
-        <div style={{ maxWidth: "768px" }} className="border mx-auto mt-10">
+        <div style={{ maxWidth: "768px" }} className="mx-auto mt-10">
           <h4 className="font-bold text-lg">Variant</h4>
           {/* variant form */}
           <div className="mt-4">
             <div>
               <p className="font-semibold">Variant set name</p>
-              <input
-                {...register("name")}
-                value={field.name}
-                type="text"
-                className="w-full bg-gray rounded-lg focus:outline-none p-3 mt-3 text-sm"
-                placeholder="Type here .."
-                onChange={_onChange}
-              />
-              {errors?.name ? errors.name.message : ""}
+
+              <div>
+                <input
+                  {...register("name")}
+                  value={field.name}
+                  type="text"
+                  className={`w-full bg-gray rounded-lg focus:outline-none p-3 mt-3 text-sm ${
+                    errors?.name ? "border-red border" : ""
+                  }`}
+                  placeholder="Type here .."
+                  onChange={_onChange}
+                />
+                {errors?.name ? (
+                  <MessageRequired message={errors.name.message} />
+                ) : (
+                  ""
+                )}
+              </div>
             </div>
           </div>
           {/*  */}
@@ -183,24 +193,34 @@ export default function AddVariant() {
               return (
                 <li key={index}>
                   <div className="flex items-center">
-                    <IconDrag width="12" height="12" />
-                    <input
-                      type="text"
-                      className="w-full bg-gray rounded-lg focus:outline-none p-3 mt-3 mx-5 text-sm"
-                      placeholder="E.g: Color"
-                      onChange={(e) => _handleChangeOption(e, index)}
-                    />
+                    <IconDrag width="12" height="12" className="mr-5" />
+
+                    <div className="w-full">
+                      <input
+                        type="text"
+                        className={`w-full bg-gray rounded-lg focus:outline-none p-3 mt-3 text-sm ${
+                          errors?.option ? "border-red border" : ""
+                        }`}
+                        placeholder="E.g: Color"
+                        onChange={(e) => _handleChangeOption(e, index)}
+                      />
+                    </div>
+
                     <IconDelete
                       width="19"
                       height="19"
-                      className="cursor-pointer"
+                      className="cursor-pointer ml-5"
                       onClick={() => _handleMinus(items)}
                     />
                   </div>
                 </li>
               );
             })}
-            {errors?.option ? errors.option.message : ""}
+            {errors?.option ? (
+              <MessageRequired message={errors.option.message} />
+            ) : (
+              ""
+            )}
           </ul>
           <button
             className="flex items-center text-green font-bold text-sm mt-10"

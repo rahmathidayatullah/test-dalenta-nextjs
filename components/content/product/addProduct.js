@@ -30,7 +30,7 @@ export default function AddProduct() {
       {/* end head */}
       {/* start content */}
       <div>
-        <div style={{ maxWidth: "1080px" }} className="border mx-auto mt-10">
+        <div style={{ maxWidth: "1080px" }} className="mx-auto mt-10">
           <h4 className="font-bold text-lg">Product information</h4>
           {/* product form */}
           <div className="mt-4">

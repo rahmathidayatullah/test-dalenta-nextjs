@@ -15,6 +15,8 @@ import Swal from "sweetalert2";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
+import MessageRequired from "../../messageRequired";
+import NumberFormat from "react-number-format";
 
 const schema = yup.object().shape({
   name: yup.string().required(),
@@ -64,7 +66,7 @@ export default function AddModifier() {
   };
   const handleChangeNumber = (e, index) => {
     let _temp = [...modifierOption];
-    _temp[index].price = e.target.value;
+    _temp[index].price = e.floatValue;
     setModifierOption(_temp);
   };
 
@@ -95,6 +97,7 @@ export default function AddModifier() {
       type: "DEFAULT",
       modifierOption: modifierOption,
     };
+    console.log("sendData", sendData);
     if (!error) {
       try {
         let { data } = await axios.post(
@@ -110,7 +113,7 @@ export default function AddModifier() {
         // _clearField();
         router.push({
           pathname: `/modifiers`,
-          query: { success: true },
+          query: { success: "success" },
         });
       } catch (error) {
         Swal.fire("Gagal", `${error.response.data.code}`, "error");
@@ -136,21 +139,29 @@ export default function AddModifier() {
         {/* end head */}
         {/* start content */}
         <div>
-          <div style={{ maxWidth: "768px" }} className="border mx-auto mt-10">
+          <div style={{ maxWidth: "768px" }} className="mx-auto mt-10">
             <h4 className="font-bold text-lg">Modifier</h4>
             {/* variant form */}
             <div className="mt-4">
               <div>
                 <p className="font-semibold">Modifier set name</p>
-                <input
-                  {...register("name")}
-                  value={name}
-                  type="text"
-                  className="w-full bg-gray rounded-lg focus:outline-none p-3 mt-3 text-sm"
-                  placeholder="Type here .."
-                  onChange={(e) => setName(e.target.value)}
-                />
-                {errors?.name ? errors.name.message : ""}
+                <div>
+                  <input
+                    {...register("name")}
+                    value={name}
+                    type="text"
+                    className={`w-full bg-gray rounded-lg focus:outline-none p-3 mt-3 text-sm ${
+                      errors?.name ? "border-red border" : ""
+                    }`}
+                    placeholder="Type here .."
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </div>
+                {errors?.name ? (
+                  <MessageRequired message={errors.name.message} />
+                ) : (
+                  ""
+                )}
               </div>
             </div>
             {/*  */}
@@ -186,12 +197,23 @@ export default function AddModifier() {
                       </div>
                       <div className="col-span-1">
                         <div className="p-3 bg-gray text-sm font-semibold border relative">
-                          <input
+                          {/* <input
                             onChange={(e) => handleChangeNumber(e, index)}
                             type="number"
                             className="w-full bg-gray rounded-lg focus:outline-none text-sm"
                             placeholder="Rp. 0"
+                          /> */}
+
+                          <NumberFormat
+                            thousandSeparator={true}
+                            prefix={"Rp."}
+                            className="w-full bg-gray rounded-lg focus:outline-none text-sm"
+                            inputmode="numeric"
+                            onValueChange={(values) =>
+                              handleChangeNumber(values, index)
+                            }
                           />
+
                           <IconDelete
                             className="absolute transform top-1/2 -translate-y-1/2 -right-8 cursor-pointer"
                             onClick={() => handleDelete(index)}
@@ -202,7 +224,11 @@ export default function AddModifier() {
                   </li>
                 );
               })}
-              {errors?.option ? errors.option.message : ""}
+              {errors?.option ? (
+                <MessageRequired message={errors.option.message} />
+              ) : (
+                ""
+              )}
             </ul>
             <button
               className="flex items-center text-green font-bold text-sm mt-10"

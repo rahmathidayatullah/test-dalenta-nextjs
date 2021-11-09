@@ -2,9 +2,11 @@ import React from "react";
 import IconDelete from "./icon/Delete";
 import IconEdit from "./icon/Edit";
 import Link from "next/link";
-export default function LayoutItemsList({ children }) {
+export default function LayoutItemsList({ children, position }) {
   return (
-    <ul className="bg-white absolute right-0 rounded-lg border shadow z-10">
+    <ul
+      className={`bg-white absolute ${position} rounded-lg border shadow z-10`}
+    >
       {children}
     </ul>
   );
@@ -21,4 +23,5 @@ LayoutItemsList.defaultProps = {
       </Link>
     </li>
   ),
+  position: "right-0",
 };
